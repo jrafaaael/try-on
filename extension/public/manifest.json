@@ -3,13 +3,14 @@
   "name": "clothes-swap",
   "version": "1.0",
   "description": "",
-  "action": {
-    "default_popup": "index.html"
+  "permissions": ["sidePanel"],
+  "side_panel": {
+    "default_path": "index.html"
   },
-  "permissions": ["scripting", "tabs", "activeTab"],
-  "host_permissions": ["https://*/*", "http://*/*"],
-  "icons": {
-    "16": "./vite.svg",
-    "32": "./vite.svg"
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Click to open panel"
   }
 }
