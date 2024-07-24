@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Geist";
+  font-display: swap;
+  src: url(/fonts/Geist.woff2) format("woff2");
+}
+
+body {
+  @apply p-8;
+}
