@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Model from "./components/Model.vue";
+import Garnet from "./components/Garnet.vue";
 import { idmvton } from "./libs/gradio/idm-vton";
 
 const model = ref<File | null>(null);
+const garnet = ref<File | null>(null);
 
 async function handleClick() {
   if (!model.value) return;
-
-  const garment = await (
-    await fetch(
-      "https://yisol-idm-vton.hf.space/file=/tmp/gradio/82d64c45d16c789e83b8a8efb328185aa3d2ef29/09164_00.jpg"
-    )
-  ).blob();
+  if (!garnet.value) return;
 
   const result = await idmvton.predict({
     model: model.value,
-    garment,
+    garment: garnet.value,
   });
 
   console.log(result);
@@ -25,8 +22,9 @@ async function handleClick() {
 
 <template>
   <Model v-model="model" @change="(data) => (model = data.file)" />
+  <Garnet v-model="garnet" @change="(data) => (garnet = data.file)" />
   <button
-    class="w-full p-3 bg-purple-600 rounded-lg text-lg text-purple-50"
+    class="w-full mt-6 p-3 bg-purple-600 rounded-lg text-lg text-purple-50"
     @click="handleClick"
   >
     Try on ✨!
