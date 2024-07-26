@@ -20,16 +20,17 @@ function handleChange(data) {
     <DnD
       v-if="model === null"
       accept="image/*"
-      class="w-full aspect-[3/2] bg-neutral-100 border border-neutral-200 text-neutral-600 rounded-lg flex justify-center items-center"
+      class="w-full h-64 bg-neutral-100 border border-neutral-200 text-neutral-600 rounded-lg flex justify-center items-center"
       @change="handleChange"
     >
       <span>Drag and drop or</span>&nbsp;
       <span class="text-blue-600 underline">choose file</span>
     </DnD>
-    <PreviewImage
+    <div
       v-else
-      class="w-full bg-neutral-100 border border-neutral-200 text-neutral-600 rounded-lg object"
-      :model="model"
-    />
+      class="w-full h-64 p-4 bg-neutral-100 border border-neutral-200 rounded-lg flex justify-center"
+    >
+      <PreviewImage class="rounded-lg object-fill" :model="model" />
+    </div>
   </section>
 </template>
