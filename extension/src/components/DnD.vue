@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+defineProps({ accept: String });
 const inputRef = ref<HTMLInputElement>();
 const emit = defineEmits(["change"]);
 
@@ -28,9 +29,9 @@ function handleDrop(e: Event) {
     type="file"
     name="model"
     id="model"
-    accept="image/*"
     class="sr-only"
     ref="inputRef"
+    :accept="$props.accept"
     @change="handleUpload"
   />
   <button
