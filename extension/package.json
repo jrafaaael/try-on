@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gradio/client": "^1.4.0",
     "vue": "^3.4.31"
   },
   "devDependencies": {
