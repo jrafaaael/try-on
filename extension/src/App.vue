@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import Model from "./components/Model.vue";
 import { idmvton } from "./libs/gradio/idm-vton";
 
+const model = ref<File | null>(null);
+
 async function handleClick() {
-  const model = await (
-    await fetch(
-      "https://yisol-idm-vton.hf.space/file=/tmp/gradio/96741724e32388a6ef1ec541f0d3ae37ccac11f8/00034_00.jpg"
-    )
-  ).blob();
+  if (!model.value) return;
+
   const garment = await (
     await fetch(
       "https://yisol-idm-vton.hf.space/file=/tmp/gradio/82d64c45d16c789e83b8a8efb328185aa3d2ef29/09164_00.jpg"
@@ -14,7 +15,7 @@ async function handleClick() {
   ).blob();
 
   const result = await idmvton.predict({
-    model,
+    model: model.value,
     garment,
   });
 
@@ -23,6 +24,7 @@ async function handleClick() {
 </script>
 
 <template>
+  <Model @change="(event) => (model = event.files[0])" />
   <button
     class="w-full p-3 bg-purple-600 rounded-lg text-lg text-purple-50"
     @click="handleClick"
