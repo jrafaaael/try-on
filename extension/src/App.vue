@@ -24,7 +24,7 @@ async function handleClick() {
 </script>
 
 <template>
-  <Model @change="(data) => (model = data.file)" />
+  <Model v-model="model" @change="(data) => (model = data.file)" />
   <button
     class="w-full p-3 bg-purple-600 rounded-lg text-lg text-purple-50"
     @click="handleClick"
