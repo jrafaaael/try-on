@@ -3,11 +3,13 @@ import { ref } from "vue";
 import Model from "./components/Model.vue";
 import Garnet from "./components/Garnet.vue";
 import ResultPlaceholder from "./components/ResultPlaceholder.vue";
+import ResultSlider from "./components/ResultSlider.vue";
 import { idmvton } from "./libs/gradio/idm-vton";
 
 const model = ref<File | null>(null);
 const garnet = ref<File | null>(null);
 const isPredicting = ref(false);
+const result = ref<string | null>(null);
 
 async function handleSubmit() {
   if (!model.value) return;
@@ -24,6 +26,7 @@ async function handleSubmit() {
   isPredicting.value = false;
 
   console.log(data);
+  result.value = data[0].url;
 }
 </script>
 
@@ -42,5 +45,6 @@ async function handleSubmit() {
       Try on ✨!
     </button>
     <ResultPlaceholder v-if="isPredicting" />
+    <ResultSlider v-else-if="result" :model="model!" :result="result" />
   </form>
 </template>
