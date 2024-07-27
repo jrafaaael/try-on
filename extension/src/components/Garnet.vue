@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import DnD from "./DnD.vue";
-import PreviewImage from "./PreviewImage.vue";
 
-const garnet = defineModel<File | null>();
+const garnet = defineModel<{ file: File; url: string } | null>();
 const emit = defineEmits(["change"]);
 
-function handleChange(data) {
+function handleChange(data: { files: FileList }) {
   const file = data.files[0];
 
   if (!file.type.includes("image")) return;
 
-  emit("change", { file });
+  garnet.value && URL.revokeObjectURL(garnet.value?.url);
+
+  garnet.value = {
+    file: file,
+    url: URL.createObjectURL(file),
+  };
 }
 </script>
 
@@ -32,9 +36,10 @@ function handleChange(data) {
         </p>
       </template>
       <template v-else>
-        <PreviewImage
+        <img
           class="max-h-full min-h-0 rounded-lg object-cover"
-          :model="garnet"
+          alt="Garnet image"
+          :src="garnet?.url"
         />
         <p>
           <span>Drag and drop or</span>&nbsp;<span

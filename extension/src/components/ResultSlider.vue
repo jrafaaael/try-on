@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import "two-up-element";
-import PreviewImage from "./PreviewImage.vue";
 
-defineProps<{ model: File; result: string }>();
+defineProps<{
+  model: { file: File; url: string };
+  result: string;
+}>();
 </script>
 
 <template>
   <two-up
     class="slider w-full aspect-square border-2 border-neutral-200 rounded-lg overflow-hidden"
   >
-    <PreviewImage :model="model" />
-    <img slot="second" :src="result" />
+    <img slot="first" :src="$props.model.url" />
+    <img slot="second" :src="$props.result" />
   </two-up>
 </template>
 

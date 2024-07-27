@@ -6,8 +6,8 @@ import ResultPlaceholder from "./components/ResultPlaceholder.vue";
 import ResultSlider from "./components/ResultSlider.vue";
 import { idmvton } from "./libs/gradio/idm-vton";
 
-const model = ref<File | null>(null);
-const garnet = ref<File | null>(null);
+const model = ref<{ file: File; url: string } | null>(null);
+const garnet = ref<{ file: File; url: string } | null>(null);
 const isPredicting = ref(false);
 const result = ref<string | null>(null);
 
@@ -19,21 +19,20 @@ async function handleSubmit() {
   isPredicting.value = true;
 
   const data = await idmvton.predict({
-    model: model.value,
-    garment: garnet.value,
+    model: model.value.file,
+    garment: garnet.value.file,
   });
 
   isPredicting.value = false;
 
-  console.log(data);
   result.value = data[0].url;
 }
 </script>
 
 <template>
   <form class="flex flex-col gap-6" @submit.prevent="handleSubmit">
-    <Model v-model="model" @change="(data) => (model = data.file)" />
-    <Garnet v-model="garnet" @change="(data) => (garnet = data.file)" />
+    <Model v-model="model" />
+    <Garnet v-model="garnet" />
     <button
       class="w-full p-3 rounded-lg text-lg text-purple-50"
       :class="[
