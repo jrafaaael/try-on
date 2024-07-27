@@ -24,7 +24,10 @@ async function handleClick() {
   <Model v-model="model" @change="(data) => (model = data.file)" />
   <Garnet v-model="garnet" @change="(data) => (garnet = data.file)" />
   <button
-    class="w-full mt-6 p-3 bg-purple-600 rounded-lg text-lg text-purple-50"
+    class="w-full mt-6 p-3 rounded-lg text-lg text-purple-50"
+    :class="[
+      model && garnet ? 'bg-purple-600' : 'bg-purple-400 cursor-not-allowed',
+    ]"
     @click="handleClick"
   >
     Try on ✨!
