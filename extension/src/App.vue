@@ -7,7 +7,7 @@ import { idmvton } from "./libs/gradio/idm-vton";
 const model = ref<File | null>(null);
 const garnet = ref<File | null>(null);
 
-async function handleClick() {
+async function handleSubmit() {
   if (!model.value) return;
   if (!garnet.value) return;
 
@@ -21,15 +21,16 @@ async function handleClick() {
 </script>
 
 <template>
-  <Model v-model="model" @change="(data) => (model = data.file)" />
-  <Garnet v-model="garnet" @change="(data) => (garnet = data.file)" />
-  <button
-    class="w-full mt-6 p-3 rounded-lg text-lg text-purple-50"
-    :class="[
-      model && garnet ? 'bg-purple-600' : 'bg-purple-400 cursor-not-allowed',
-    ]"
-    @click="handleClick"
-  >
-    Try on ✨!
-  </button>
+  <form @submit.prevent="handleSubmit">
+    <Model v-model="model" @change="(data) => (model = data.file)" />
+    <Garnet v-model="garnet" @change="(data) => (garnet = data.file)" />
+    <button
+      class="w-full mt-6 p-3 rounded-lg text-lg text-purple-50"
+      :class="[
+        model && garnet ? 'bg-purple-600' : 'bg-purple-400 cursor-not-allowed',
+      ]"
+    >
+      Try on ✨!
+    </button>
+  </form>
 </template>
