@@ -18,7 +18,7 @@ function handleUpload(e: Event) {
   emit("change", { files });
 }
 
-function handleDrop(e: Event) {
+function handleDrop(e: DragEvent) {
   const dt = e.dataTransfer;
   const files = dt?.files;
 
