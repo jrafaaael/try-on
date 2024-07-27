@@ -6,22 +6,26 @@ interface PredictParams {
   garmentDescription?: string;
 }
 
+interface DataResponse {
+  url: string;
+}
+
 class IDMVTON {
   #_MODEL_ID = "yisol/IDM-VTON";
 
-  async predict(params: PredictParams) {
+  async predict(params: PredictParams): Promise<[DataResponse, DataResponse]> {
     const _model = await Client.connect(this.#_MODEL_ID);
     const result = await _model.predict("/tryon", [
       { background: params.model, layers: [], composite: null },
       params.garment,
       params?.garmentDescription ?? "",
       true,
-      false,
+      true,
       30,
       42,
     ]);
 
-    return result;
+    return result.data as [DataResponse, DataResponse];
   }
 }
 
