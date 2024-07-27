@@ -20,7 +20,7 @@ function handleChange(data) {
     <DnD
       accept="image/*"
       class="w-full h-64 p-4 bg-neutral-100 border-2 border-neutral-200 text-neutral-600 rounded-lg flex flex-col justify-center items-center gap-2"
-      :classes="{ dragging: 'border-2 border-dashed border-blue-400' }"
+      :classes="{ dragging: 'border-dashed !border-blue-400' }"
       @change="handleChange"
     >
       <template v-if="garnet === null">
