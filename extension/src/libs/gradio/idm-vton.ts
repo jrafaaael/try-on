@@ -1,8 +1,8 @@
 import { Client } from "@gradio/client";
 
 interface PredictParams {
-  model: Blob | File | Buffer | string;
-  garment: Blob | File | Buffer | string;
+  model: File;
+  garment: File;
   garmentDescription?: string;
 }
 
