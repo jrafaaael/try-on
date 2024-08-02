@@ -46,7 +46,7 @@ function handleDrop(e: DragEvent) {
       $attrs.class ?? $props.classes?.default,
       isDragging ? $props.classes?.dragging : '',
     ]"
-    @click="() => inputRef && inputRef.click()"
+    @click.prevent.stop="() => inputRef && inputRef.click()"
     @drag.prevent.stop=""
     @dragstart.prevent.stop=""
     @dragend.prevent.stop=""
