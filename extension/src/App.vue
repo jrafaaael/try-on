@@ -18,14 +18,20 @@ async function handleSubmit() {
 
   isPredicting.value = true;
 
-  const data = await idmvton.predict({
-    model: model.value.file,
-    garment: garnet.value.file,
-  });
-
-  isPredicting.value = false;
-
-  result.value = data[0].url;
+  await idmvton
+    .predict({
+      model: model.value.file,
+      garment: garnet.value.file,
+    })
+    .then((data) => {
+      result.value = data[0].url;
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+    .finally(() => {
+      isPredicting.value = false;
+    });
 }
 </script>
 
