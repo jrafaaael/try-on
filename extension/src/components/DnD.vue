@@ -13,7 +13,7 @@ function handleUpload(e: Event) {
   const el = e.target as HTMLInputElement;
   const files = el.files;
 
-  if (!files) return;
+  if (!files || files.length <= 0) return;
 
   emit("change", { files });
 }
@@ -24,7 +24,7 @@ function handleDrop(e: DragEvent) {
 
   isDragging.value = false;
 
-  if (!files) return;
+  if (!files || files.length <= 0) return;
 
   emit("change", { files });
 }
