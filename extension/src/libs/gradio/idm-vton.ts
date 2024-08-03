@@ -17,11 +17,12 @@ interface ValidateResponse {
 class IDMVTON {
   #_MODEL_ID = "yisol/IDM-VTON";
 
-  async #_validate({ model }: { model: File }) {
+  async #_validate({ model, garment }: { model: File; garment: File }) {
     const fd = new FormData();
     fd.append("model", model);
+    fd.append("garment", garment);
 
-    const res = await fetch("http://localhost:8787/api/validate/model", {
+    const res = await fetch("http://localhost:8787/api/validate", {
       method: "POST",
       body: fd,
     });
@@ -35,7 +36,7 @@ class IDMVTON {
     garment,
     garmentDescription,
   }: PredictParams): Promise<[PredictResponse, PredictResponse]> {
-    await this.#_validate({ model });
+    await this.#_validate({ model, garment });
 
     const _model = await Client.connect(this.#_MODEL_ID);
     const result = await _model.predict("/tryon", [
