@@ -16,7 +16,10 @@ app.post('/', async (c) => {
 		const { object } = await generateObject({
 			model: google('models/gemini-1.5-flash-latest'),
 			schema: validateSchema,
-			system: 'You help to validate images with HUMANS on it',
+			system: `
+				You validate images with HUMANS on it.
+				You validate if HUMANS are showing their UPPER-BODY.
+			`.trim(),
 			messages: [
 				{
 					role: 'user',
@@ -25,10 +28,11 @@ app.post('/', async (c) => {
 			],
 			temperature: 0,
 			maxRetries: 0,
-			mode: 'json',
+			mode: 'tool',
 		});
 
 		if (!object.isHuman) return c.json({ errors: [{ message: 'Model should be an human' }] }, 400);
+		if (!object.isShowingUpperBody) return c.json({ errors: [{ message: 'Model should show at least their upper-body' }] }, 400);
 
 		return c.json({ data: object }, 200);
 	} catch (error) {
