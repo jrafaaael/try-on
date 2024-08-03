@@ -29,8 +29,7 @@ async function validatorFactory<T>({ model, schema, system, image }: { model: an
 
 app.post('/', async (c) => {
 	const body = await c.req.parseBody();
-	const model = body['model'] as File;
-	const garment = body['garment'] as File;
+	const img = { model: body['model'] as File, garment: body['garment'] as File };
 	const google = createGoogleGenerativeAI({
 		apiKey: c.env['GOOGLE_GENERATIVE_AI_API_KEY'],
 	});
@@ -43,7 +42,7 @@ app.post('/', async (c) => {
 				You validate images with HUMANS on it.
 				A valid MODEL is a human that is showing their FULL UPPER-BODY.
 			`.trim(),
-			image: model,
+			image: img.model,
 		}),
 		validatorFactory({
 			model: llm,
@@ -52,15 +51,15 @@ app.post('/', async (c) => {
 				You validate images with REAL UPPER-BODY garment on it.
 				A valid garment image CAN'T have HUMAN wearing the garment.
 			`.trim(),
-			image: garment,
+			image: img.garment,
 		}),
 	];
-	const [a, b] = await Promise.allSettled(promises);
+	const [model, garment] = await Promise.allSettled(promises);
 	const errors: { message: string }[] = [];
 
-	if (a.status === 'rejected' || b.status === 'rejected') return c.json({ errors: [{ message: 'Something went wrong' }] }, 500);
+	if (model.status === 'rejected' || garment.status === 'rejected') return c.json({ errors: [{ message: 'Something went wrong' }] }, 500);
 
-	const res = { ...a.value.object, ...b.value.object } as ValidateModel & ValidateGarment;
+	const res = { ...model.value.object, ...garment.value.object } as ValidateGarment & ValidateModel;
 
 	if (!res?.isHuman) errors.push({ message: 'Model must be an human' });
 	if (!res?.isShowingUpperBody) errors.push({ message: 'Model must show at least their upper-body' });
