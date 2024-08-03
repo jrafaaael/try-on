@@ -56,16 +56,19 @@ app.post('/', async (c) => {
 		}),
 	];
 	const [a, b] = await Promise.allSettled(promises);
+	const errors: { message: string }[] = [];
 
 	if (a.status === 'rejected' || b.status === 'rejected') return c.json({ errors: [{ message: 'Something went wrong' }] }, 500);
 
 	const res = { ...a.value.object, ...b.value.object } as ValidateModel & ValidateGarment;
 
-	if (!res?.isHuman) return c.json({ errors: [{ message: 'Model must be an human' }] }, 400);
-	if (!res?.isShowingUpperBody) return c.json({ errors: [{ message: 'Model must show at least their upper-body' }] }, 400);
-	if (!res?.isCloth) return c.json({ errors: [{ message: 'Image must be a valid cloth' }] }, 400);
-	if (!res?.isUpperBody) return c.json({ errors: [{ message: 'Garment must be upper-body' }] }, 400);
-	if (res?.hasHuman) return c.json({ errors: [{ message: 'Garment image must not have a model' }] }, 400);
+	if (!res?.isHuman) errors.push({ message: 'Model must be an human' });
+	if (!res?.isShowingUpperBody) errors.push({ message: 'Model must show at least their upper-body' });
+	if (!res?.isCloth) errors.push({ message: 'Image must be a valid cloth' });
+	if (!res?.isUpperBody) errors.push({ message: 'Garment must be upper-body' });
+	if (res?.hasHuman) errors.push({ message: 'Garment image must not have a model' });
+
+	if (errors.length >= 1) return c.json({ errors }, 400);
 
 	return c.json({ data: res });
 });
