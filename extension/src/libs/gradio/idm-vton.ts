@@ -21,7 +21,7 @@ class IDMVTON {
     const fd = new FormData();
     fd.append("model", model);
 
-    const res = await fetch("http://localhost:8787/api/validate", {
+    const res = await fetch("http://localhost:8787/api/validate/model", {
       method: "POST",
       body: fd,
     });

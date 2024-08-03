@@ -1,11 +1,11 @@
 import { Hono } from 'hono';
 import { generateObject } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { validateSchema } from '../schemas/validate.schema';
+import { validateModelSchema } from '../schemas/validate.schema';
 
 const app = new Hono();
 
-app.post('/', async (c) => {
+app.post('/model', async (c) => {
 	const body = await c.req.parseBody();
 	const model = body['model'] as File;
 	const google = createGoogleGenerativeAI({
@@ -15,7 +15,7 @@ app.post('/', async (c) => {
 	try {
 		const { object } = await generateObject({
 			model: google('models/gemini-1.5-flash-latest'),
-			schema: validateSchema,
+			schema: validateModelSchema,
 			system: `
 				You validate images with HUMANS on it.
 				You validate if HUMANS are showing their UPPER-BODY.
