@@ -14,7 +14,7 @@ app.post('/', async (c) => {
 
 	try {
 		const { object } = await generateObject({
-			model: google('models/gemini-1.5-pro-latest'),
+			model: google('models/gemini-1.5-flash-latest'),
 			schema: validateSchema,
 			system: 'You help to validate images with HUMANS on it',
 			messages: [
