@@ -8,6 +8,8 @@ interface Bindings {
 	GOOGLE_GENERATIVE_AI_API_KEY: string;
 }
 
+type ErrorCode = 'INVALID_MODEL' | 'INVALID_GARMENT';
+
 const app = new Hono<{ Bindings: Bindings }>();
 
 async function validatorFactory<T>({ model, schema, system, image }: { model: any; schema: Schema<T>; system: string; image: File }) {
@@ -55,17 +57,18 @@ app.post('/', async (c) => {
 		}),
 	];
 	const [model, garment] = await Promise.allSettled(promises);
-	const errors: { message: string }[] = [];
+	const errors: { message: string; code: ErrorCode }[] = [];
 
-	if (model.status === 'rejected' || garment.status === 'rejected') return c.json({ errors: [{ message: 'Something went wrong' }] }, 500);
+	if (model.status === 'rejected' || garment.status === 'rejected')
+		return c.json({ errors: [{ message: 'Something went wrong', code: 'SERVER_ERROR' }] }, 500);
 
 	const res = { ...model.value.object, ...garment.value.object } as ValidateGarment & ValidateModel;
 
-	if (!res?.isHuman) errors.push({ message: 'Model must be an human' });
-	if (!res?.isShowingUpperBody) errors.push({ message: 'Model must show at least their upper-body' });
-	if (!res?.isCloth) errors.push({ message: 'Image must be a valid cloth' });
-	if (!res?.isUpperBody) errors.push({ message: 'Garment must be upper-body' });
-	if (res?.hasHuman) errors.push({ message: 'Garment image must not have a model' });
+	if (!res?.isHuman) errors.push({ message: 'Model must be an human', code: 'INVALID_MODEL' });
+	if (!res?.isShowingUpperBody) errors.push({ message: 'Model must show at least their upper-body', code: 'INVALID_MODEL' });
+	if (!res?.isCloth) errors.push({ message: 'Image must be a valid cloth', code: 'INVALID_GARMENT' });
+	if (!res?.isUpperBody) errors.push({ message: 'Garment must be upper-body', code: 'INVALID_GARMENT' });
+	if (res?.hasHuman) errors.push({ message: 'Garment image must not have a model', code: 'INVALID_GARMENT' });
 
 	if (errors.length >= 1) return c.json({ errors }, 400);
 
