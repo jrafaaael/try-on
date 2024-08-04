@@ -5,11 +5,13 @@ import Model from "./components/Model.vue";
 import Garment from "./components/Garment.vue";
 import ResultPlaceholder from "./components/ResultPlaceholder.vue";
 import ResultSlider from "./components/ResultSlider.vue";
-import { idmvton } from "./libs/gradio/idm-vton";
+import Errors from "./components/Errors.vue";
+import { ValidateError, idmvton } from "./libs/gradio/idm-vton";
 
 const model = ref<{ file: File; url: string } | null>(null);
 const garment = ref<{ file: File; url: string } | null>(null);
 const isPredicting = ref(false);
+const validationError = ref<ValidateError[] | null>(null);
 const result = ref<string | null>(null);
 
 async function handleSubmit() {
@@ -18,6 +20,7 @@ async function handleSubmit() {
   if (isPredicting.value) return;
 
   isPredicting.value = true;
+  validationError.value = null;
 
   await idmvton
     .predict({
@@ -28,9 +31,10 @@ async function handleSubmit() {
       const [data, error] = res;
 
       if (error) {
+        validationError.value = error;
+
         throw new Error(
-          "\n" +
-            error.errors.map((e, idx) => `${idx + 1}. ${e.message}`).join("\n")
+          "\n" + error.map((e, idx) => `${idx + 1}. ${e.message}`).join("\n")
         );
       }
 
@@ -50,9 +54,21 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <form class="flex flex-col gap-6" @submit.prevent="handleSubmit">
-    <Model v-model="model" />
-    <Garment v-model="garment" />
+  <form class="mb-6 flex flex-col gap-6" @submit.prevent="handleSubmit">
+    <Model
+      v-model="model"
+      :has-error="
+        validationError?.some((error) => error.code === 'INVALID_MODEL') ??
+        false
+      "
+    />
+    <Garment
+      v-model="garment"
+      :has-error="
+        validationError?.some((error) => error.code === 'INVALID_GARMENT') ??
+        false
+      "
+    />
     <button
       class="w-full p-3 rounded-lg text-lg text-purple-50"
       :class="[
@@ -66,4 +82,5 @@ async function handleSubmit() {
     <ResultPlaceholder v-if="isPredicting" />
     <ResultSlider v-else-if="result" :model="model!" :result="result" />
   </form>
+  <Errors v-if="validationError" :errors="validationError" />
 </template>
