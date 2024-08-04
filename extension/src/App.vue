@@ -68,6 +68,7 @@ async function handleSubmit() {
             validationError?.filter(
               (error) => error.code !== 'INVALID_MODEL'
             ) ?? null;
+          result = null;
         }
       "
     />
