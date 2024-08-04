@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import confetti from "canvas-confetti";
 import Model from "./components/Model.vue";
 import Garnet from "./components/Garnet.vue";
 import ResultPlaceholder from "./components/ResultPlaceholder.vue";
@@ -25,6 +26,10 @@ async function handleSubmit() {
     })
     .then((data) => {
       result.value = data[0].url;
+
+      confetti({
+        particleCount: 100,
+      });
     })
     .catch((e) => {
       console.error(e);
