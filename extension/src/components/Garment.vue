@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DnD from "./DnD.vue";
 
-const garnet = defineModel<{ file: File; url: string } | null>();
+const garment = defineModel<{ file: File; url: string } | null>();
 const emit = defineEmits(["change"]);
 
 function handleChange(data: { files: FileList }) {
@@ -9,9 +9,9 @@ function handleChange(data: { files: FileList }) {
 
   if (!file.type.includes("image")) return;
 
-  garnet.value && URL.revokeObjectURL(garnet.value?.url);
+  garment.value && URL.revokeObjectURL(garment.value?.url);
 
-  garnet.value = {
+  garment.value = {
     file: file,
     url: URL.createObjectURL(file),
   };
@@ -27,7 +27,7 @@ function handleChange(data: { files: FileList }) {
       :classes="{ dragging: 'border-dashed !border-blue-400' }"
       @change="handleChange"
     >
-      <template v-if="garnet === null">
+      <template v-if="garment === null">
         <p>
           <span>Drag and drop or</span>&nbsp;<span
             class="text-blue-600 underline"
@@ -38,8 +38,8 @@ function handleChange(data: { files: FileList }) {
       <template v-else>
         <img
           class="max-h-full min-h-0 rounded-lg object-cover"
-          alt="Garnet image"
-          :src="garnet?.url"
+          alt="Garment image"
+          :src="garment?.url"
         />
         <p>
           <span>Drag and drop or</span>&nbsp;<span

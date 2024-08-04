@@ -2,19 +2,19 @@
 import { ref } from "vue";
 import confetti from "canvas-confetti";
 import Model from "./components/Model.vue";
-import Garnet from "./components/Garnet.vue";
+import Garment from "./components/Garment.vue";
 import ResultPlaceholder from "./components/ResultPlaceholder.vue";
 import ResultSlider from "./components/ResultSlider.vue";
 import { idmvton } from "./libs/gradio/idm-vton";
 
 const model = ref<{ file: File; url: string } | null>(null);
-const garnet = ref<{ file: File; url: string } | null>(null);
+const garment = ref<{ file: File; url: string } | null>(null);
 const isPredicting = ref(false);
 const result = ref<string | null>(null);
 
 async function handleSubmit() {
   if (!model.value) return;
-  if (!garnet.value) return;
+  if (!garment.value) return;
   if (isPredicting.value) return;
 
   isPredicting.value = true;
@@ -22,7 +22,7 @@ async function handleSubmit() {
   await idmvton
     .predict({
       model: model.value.file,
-      garment: garnet.value.file,
+      garment: garment.value.file,
     })
     .then((res) => {
       const [data, error] = res;
@@ -52,11 +52,11 @@ async function handleSubmit() {
 <template>
   <form class="flex flex-col gap-6" @submit.prevent="handleSubmit">
     <Model v-model="model" />
-    <Garnet v-model="garnet" />
+    <Garment v-model="garment" />
     <button
       class="w-full p-3 rounded-lg text-lg text-purple-50"
       :class="[
-        model && garnet && !isPredicting
+        model && garment && !isPredicting
           ? 'bg-purple-600'
           : 'bg-purple-400 cursor-not-allowed',
       ]"
