@@ -23,7 +23,7 @@ function handleChange(data: { files: FileList }) {
 
 <template>
   <section>
-    <h2 class="mb-2 text-2xl font-black">Cloth image 👚</h2>
+    <h2 class="mb-2 text-2xl font-black">Garment image 👚</h2>
     <DnD
       accept="image/*"
       class="w-full h-64 p-4 border-2 rounded-lg text-neutral-600 flex flex-col justify-center items-center gap-2"
