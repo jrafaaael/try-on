@@ -18,6 +18,7 @@ async function handleSubmit() {
   if (!model.value) return;
   if (!garment.value) return;
   if (isPredicting.value) return;
+  if (validationError.value.length > 0) return;
 
   isPredicting.value = true;
   validationError.value = [];
@@ -72,7 +73,7 @@ async function handleSubmit() {
     <button
       class="w-full p-3 rounded-lg text-lg text-purple-50"
       :class="[
-        model && garment && !isPredicting
+        model && garment && !isPredicting && validationError.length <= 0
           ? 'bg-purple-600'
           : 'bg-purple-400 cursor-not-allowed',
       ]"
