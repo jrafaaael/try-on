@@ -66,7 +66,7 @@ app.post('/', async (c) => {
 
 	if (!res?.isHuman) errors.push({ message: 'Model must be an human', code: 'INVALID_MODEL' });
 	if (!res?.isShowingUpperBody) errors.push({ message: 'Model must show at least their upper-body', code: 'INVALID_MODEL' });
-	if (!res?.isCloth) errors.push({ message: 'Image must be a valid cloth', code: 'INVALID_GARMENT' });
+	if (!res?.isCloth) errors.push({ message: 'Image must be a valid garment', code: 'INVALID_GARMENT' });
 	if (!res?.isUpperBody) errors.push({ message: 'Garment must be upper-body', code: 'INVALID_GARMENT' });
 	if (res?.hasHuman) errors.push({ message: 'Garment image must not have a model', code: 'INVALID_GARMENT' });
 
