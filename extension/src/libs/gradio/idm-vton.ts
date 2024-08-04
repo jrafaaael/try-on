@@ -10,8 +10,13 @@ interface PredictResponse {
   url: string;
 }
 
+export interface ValidateError {
+  message: string;
+  code: "INVALID_MODEL" | "INVALID_GARMENT";
+}
+
 interface ValidateErrorResponse {
-  errors: { message: string }[];
+  errors: ValidateError[];
 }
 
 interface ValidateResponse {
@@ -52,11 +57,11 @@ class IDMVTON {
     garment,
     garmentDescription,
   }: PredictParams): Promise<
-    [null, ValidateErrorResponse] | [[PredictResponse, PredictResponse], null]
+    [null, ValidateError[]] | [[PredictResponse, PredictResponse], null]
   > {
     const [_, error] = await this.#_validate({ model, garment });
 
-    if (error) return [null, error];
+    if (error) return [null, error.errors];
 
     const _model = await Client.connect(this.#_MODEL_ID);
     const result = await _model.predict("/tryon", [
