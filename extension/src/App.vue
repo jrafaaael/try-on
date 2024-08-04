@@ -11,7 +11,7 @@ import { ValidateError, idmvton } from "./libs/gradio/idm-vton";
 const model = ref<{ file: File; url: string } | null>(null);
 const garment = ref<{ file: File; url: string } | null>(null);
 const isPredicting = ref(false);
-const validationError = ref<ValidateError[] | null>(null);
+const validationError = ref<ValidateError[]>([]);
 const result = ref<string | null>(null);
 
 async function handleSubmit() {
@@ -20,7 +20,7 @@ async function handleSubmit() {
   if (isPredicting.value) return;
 
   isPredicting.value = true;
-  validationError.value = null;
+  validationError.value = [];
 
   await idmvton
     .predict({
@@ -82,5 +82,5 @@ async function handleSubmit() {
     <ResultPlaceholder v-if="isPredicting" />
     <ResultSlider v-else-if="result" :model="model!" :result="result" />
   </form>
-  <Errors v-if="validationError" :errors="validationError" />
+  <Errors v-if="validationError.length > 0" :errors="validationError" />
 </template>
