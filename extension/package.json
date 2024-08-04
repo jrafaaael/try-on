@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@gradio/client": "^1.4.0",
+    "canvas-confetti": "^1.9.3",
     "vue": "^3.4.31"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.40",
