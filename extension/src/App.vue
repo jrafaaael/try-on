@@ -24,7 +24,16 @@ async function handleSubmit() {
       model: model.value.file,
       garment: garnet.value.file,
     })
-    .then((data) => {
+    .then((res) => {
+      const [data, error] = res;
+
+      if (error) {
+        throw new Error(
+          "\n" +
+            error.errors.map((e, idx) => `${idx + 1}. ${e.message}`).join("\n")
+        );
+      }
+
       result.value = data[0].url;
 
       confetti({

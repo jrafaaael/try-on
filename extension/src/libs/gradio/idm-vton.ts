@@ -10,14 +10,28 @@ interface PredictResponse {
   url: string;
 }
 
-interface ValidateResponse {
+interface ValidateErrorResponse {
   errors: { message: string }[];
+}
+
+interface ValidateResponse {
+  isHuman: boolean;
+  isShowingUpperBody: boolean;
+  isCloth: boolean;
+  isUpperBody: boolean;
+  hasHuman: boolean;
 }
 
 class IDMVTON {
   #_MODEL_ID = "yisol/IDM-VTON";
 
-  async #_validate({ model, garment }: { model: File; garment: File }) {
+  async #_validate({
+    model,
+    garment,
+  }: {
+    model: File;
+    garment: File;
+  }): Promise<[null, ValidateErrorResponse] | [ValidateResponse, null]> {
     const fd = new FormData();
     fd.append("model", model);
     fd.append("garment", garment);
@@ -26,17 +40,23 @@ class IDMVTON {
       method: "POST",
       body: fd,
     });
-    const data: ValidateResponse = await res.json();
+    const data = await res.json();
 
-    if (!res.ok) throw new Error(data?.errors.map((e) => e.message).join("\n"));
+    if (!res.ok) return [null, data as ValidateErrorResponse];
+
+    return [data as ValidateResponse, null];
   }
 
   async predict({
     model,
     garment,
     garmentDescription,
-  }: PredictParams): Promise<[PredictResponse, PredictResponse]> {
-    await this.#_validate({ model, garment });
+  }: PredictParams): Promise<
+    [null, ValidateErrorResponse] | [[PredictResponse, PredictResponse], null]
+  > {
+    const [_, error] = await this.#_validate({ model, garment });
+
+    if (error) return [null, error];
 
     const _model = await Client.connect(this.#_MODEL_ID);
     const result = await _model.predict("/tryon", [
@@ -49,7 +69,7 @@ class IDMVTON {
       42,
     ]);
 
-    return result.data as [PredictResponse, PredictResponse];
+    return [result.data, null] as [[PredictResponse, PredictResponse], null];
   }
 }
 
