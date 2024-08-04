@@ -16,6 +16,8 @@ function handleChange(data: { files: FileList }) {
     file: file,
     url: URL.createObjectURL(file),
   };
+
+  emit("change");
 }
 </script>
 

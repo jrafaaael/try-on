@@ -62,12 +62,28 @@ async function handleSubmit() {
         validationError?.some((error) => error.code === 'INVALID_MODEL') ??
         false
       "
+      @change="
+        () => {
+          validationError =
+            validationError?.filter(
+              (error) => error.code !== 'INVALID_MODEL'
+            ) ?? null;
+        }
+      "
     />
     <Garment
       v-model="garment"
       :has-error="
         validationError?.some((error) => error.code === 'INVALID_GARMENT') ??
         false
+      "
+      @change="
+        () => {
+          validationError =
+            validationError?.filter(
+              (error) => error.code !== 'INVALID_GARMENT'
+            ) ?? null;
+        }
       "
     />
     <button
