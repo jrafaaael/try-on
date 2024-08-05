@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "api:dev": "pnpm --filter api dev",
-    "ext:dev": "pnpm --filter extension dev"
+    "ext:dev": "pnpm --filter extension dev",
+    "ext:build": "pnpm --filter extension build"
   },
   "keywords": [],
   "author": "",
