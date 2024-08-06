@@ -28,7 +28,7 @@ interface ValidateResponse {
 }
 
 class IDMVTON {
-  #_MODEL_ID = "yisol/IDM-VTON";
+  #_MODEL_ID = "tuan2308/IDM-VTON";
 
   async #_validate({
     model,

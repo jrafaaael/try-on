@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "api:dev": "pnpm --filter api dev",
+    "api:deploy": "pnpm --filter api run deploy",
     "ext:dev": "pnpm --filter extension dev",
     "ext:build": "pnpm --filter extension build"
   },
