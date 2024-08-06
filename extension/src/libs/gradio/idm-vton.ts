@@ -22,7 +22,7 @@ interface ValidateErrorResponse {
 interface ValidateResponse {
   isHuman: boolean;
   isShowingUpperBody: boolean;
-  isCloth: boolean;
+  isGarment: boolean;
   isUpperBody: boolean;
   hasHuman: boolean;
 }
