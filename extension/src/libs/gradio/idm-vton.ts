@@ -41,7 +41,7 @@ class IDMVTON {
     fd.append("model", model);
     fd.append("garment", garment);
 
-    const res = await fetch("http://localhost:8787/api/validate", {
+    const res = await fetch(import.meta.env.VITE_API_URL + "/api/validate", {
       method: "POST",
       body: fd,
     });

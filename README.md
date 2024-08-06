@@ -16,12 +16,17 @@ cd try-on/
 pnpm i
 ```
 
-3. Levantar el backend
+3. Genera las variables de entorno y rellena con los valores necesarios
+```bash
+cp extension/.env.example extension/.env.local && cp api/.dev.vars.example api/.dev.vars
+```
+
+4. Levantar el backend
 ```bash
 pnpm api:dev
 ```
 
-4. Levantar el frontend (en una terminal diferente a la del backend)
+5. Levantar el frontend (en una terminal diferente a la del backend)
 > [!IMPORTANT]  
 > La extensión fue desarrollada con Vite. Por ello, el desarrollo se lleva a cabo como un proyecto web normal. Para probar el funcionamiento como extensión, dirigete a [¿Cómo probar la extensión?](#faq)
 ```bash
