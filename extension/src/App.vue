@@ -35,6 +35,8 @@ async function handleSubmit() {
     quality: 0.5,
   });
 
+  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+
   await idmvton
     .predict({
       model: modelDotJPEG,
