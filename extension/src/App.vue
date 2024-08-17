@@ -7,6 +7,7 @@ import ResultPlaceholder from "./components/ResultPlaceholder.vue";
 import ResultSlider from "./components/ResultSlider.vue";
 import Errors from "./components/Errors.vue";
 import { ValidateError, idmvton } from "./libs/gradio/idm-vton";
+import { convertImageToJPEG } from "./utils/convert-image-to-jpeg";
 
 const model = ref<{ file: File; url: string } | null>(null);
 const garment = ref<{ file: File; url: string } | null>(null);
@@ -23,10 +24,21 @@ async function handleSubmit() {
   isPredicting.value = true;
   validationError.value = [];
 
+  const modelDotJPEG = await convertImageToJPEG({
+    input: model.value.url,
+    filename: model.value.file.name,
+    quality: 0.5,
+  });
+  const garmentDotJPEG = await convertImageToJPEG({
+    input: garment.value.url,
+    filename: garment.value.file.name,
+    quality: 0.5,
+  });
+
   await idmvton
     .predict({
-      model: model.value.file,
-      garment: garment.value.file,
+      model: modelDotJPEG,
+      garment: garmentDotJPEG,
     })
     .then((res) => {
       const [data, error] = res;
