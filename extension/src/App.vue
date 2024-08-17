@@ -111,8 +111,8 @@ async function handleSubmit() {
     >
       Try on ✨!
     </button>
-    <ResultPlaceholder v-if="isPredicting" />
-    <ResultSlider v-else-if="result" :model="model!" :result="result" />
   </form>
-  <Errors v-if="validationError.length > 0" :errors="validationError" />
+  <ResultPlaceholder v-if="isPredicting" />
+  <ResultSlider v-else-if="result" :model="model!" :result="result" />
+  <Errors v-else-if="validationError.length > 0" :errors="validationError" />
 </template>
