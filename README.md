@@ -3,6 +3,11 @@
 
 Con esta extensión de Chrome, los usuarios pueden cargar una imagen de una persona (modelo) y una prenda de ropa (garment). Gracias al modelo [`IDM-VTON`](https://github.com/yisol/IDM-VTON), podemos generar una nueva imagen del modelo con esta nueva prenda de ropa!
 
+## Demo
+
+https://github.com/user-attachments/assets/859d64ac-c660-4300-9ec8-f8c1d5208224
+
+
 ## Correr localmente
 
 1. Clonar el repositorio
